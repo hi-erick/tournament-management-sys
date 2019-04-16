@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 import java.nio.file.*;
 import java.io.*;
 
@@ -19,13 +19,12 @@ public class Login {
             System.out.println("Message: " + e);
         }
        
-        System.out.println("type in password");
-        String inPass = in.nextLine();
+        String inPass = JOptionPane.showInputDialog("Enter Password: ");
 
         if ( inPass.equals(line)) {
-            System.out.print("correct");
+            JOptionPane.showMessageDialog(null, "Correct");
         } else {
-            System.out.print("incorrect");
+            JOptionPane.showMessageDialog(null, "Incorrect");
         }  
     }
 }
