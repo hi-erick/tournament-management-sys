@@ -4,13 +4,13 @@ import java.awt.event.*;
 
 public class scheduleManagement extends JFrame implements ActionListener {
     
-    //JButton enter = new JButton("Enter");
-    //JButton done = new JButton("Done");
-    //JTextField input = new JTextField(20);
+    Teams array = new Teams();
+    
+    JButton displayTeams = new JButton("Show Teams");
     JButton teamNames = new JButton("Enter Team Names");
-    //String[] options = {"Enter", "Done"};
+    String input;
+    
     public static void main(String[] args) {
-        Teams array = new Teams();
         scheduleManagement frame = new scheduleManagement();
         frame.setSize(400,200);
         frame.setLocationRelativeTo(null);
@@ -22,17 +22,21 @@ public class scheduleManagement extends JFrame implements ActionListener {
         super();
         setLayout(new FlowLayout() );
         add(teamNames);
-        teamNames.addActionListener(this);        
+        add(displayTeams);
+        teamNames.addActionListener(this);
+        displayTeams.addActionListener(this);
     }
     
     public void actionPerformed(ActionEvent e) {
-        Object source = e.getScource();
+        Object source = e.getSource();
 
         if(source == teamNames) {
-            while(true) {
-                String input = JOptionPane.showInputDialog("Enter team names: (click cancel once complete)");
+            for(int i = 0; i<10; i++) {
+                input = JOptionPane.showInputDialog("Enter team names: (click cancel once complete)");
                 array.insert(input);
             }
         }
+        if(source == displayTeams) 
+            array.display();
     }
 }
