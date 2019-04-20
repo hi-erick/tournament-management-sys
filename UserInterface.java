@@ -13,25 +13,31 @@ public class UserInterface extends JFrame implements ActionListener {
    JPanel fill = new JPanel();
    JLabel tips = new JLabel("<html>This is temporary <br> so is this <html>");
    JButton match = new JButton("Match-ups");
-   JButton team = new JButton("Add Teams");
+   JButton teams = new JButton("Enter Teams");
+   JButton displayTeams = new JButton("Show Teams");
    JButton score = new JButton("Scoreboard");
    JButton info = new JButton("Information");
    JButton help = new JButton("Help");
    JButton admin = new JButton("Admin");
-   boolean log = false;
+   boolean log;
+   
+   Teams array = new Teams();
+   Login access = new Login();
    
    public static void main (String [] args) {
       UserInterface frame = new UserInterface(); 
       frame.setSize(700,500);
       frame.setLocationRelativeTo(null);
       frame.setVisible(true);
-      frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-      
+      frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   
    }
+   
    public UserInterface() {
       super ("Tournament Organization");
       con.setLayout( new BorderLayout() );
       con.add(buttons,BorderLayout.NORTH);
+      buttons.add(teams);
+      buttons.add(displayTeams);
       buttons.add(match);
       buttons.add(score);
       buttons.add(info);
@@ -44,6 +50,8 @@ public class UserInterface extends JFrame implements ActionListener {
       info.setToolTipText("<html>Provides information pertaining <br> to tournament scheduling</html>");
       help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");
       admin.addActionListener(this);
+      teams.addActionListener(this);
+      displayTeams.addActionListener(this);
       match.addActionListener(this);
       score.addActionListener(this);
       info.addActionListener(this);
@@ -51,7 +59,7 @@ public class UserInterface extends JFrame implements ActionListener {
    }
       public void actionPerformed(ActionEvent e) { 
          if(e.getSource()==admin){ 
-           login(); 
+            login(); 
          }
          if (e.getSource()==match) {
             matchups();
@@ -63,45 +71,31 @@ public class UserInterface extends JFrame implements ActionListener {
             information();
          }
          if (e.getSource()==help) {
-           help(); 
+            help(); 
          }
-         if (e.getSource()==team) {
-           team();
+         if (e.getSource()==teams) {
+            //teams();
+            for(int i = 0; i<10; i++) {
+               String input = JOptionPane.showInputDialog("Enter team names: ");
+               array.insert(input);
+            } 
          }
       }
       
       public void login() {  
-         Path file = Paths.get("Key.txt");
-         InputStream input = null;
-         String line = null;
-         Scanner in = new Scanner(System.in);
-            try {
-               input = Files.newInputStream(file);
-               BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-               line = reader.readLine();
-               input.close();
-    
-               String inPass = JOptionPane.showInputDialog("Enter Passwird: ");
-            
-            if (inPass.equals(line)) {
-               JOptionPane.showMessageDialog(null, "Correct");
-               log=true;
-            }
-            else {
-               JOptionPane.showMessageDialog(null, "Incorrect");
-            }
-            }
-            catch (Exception ex) {
-               System.out.println("Message: " + ex); //might want to make this a JOptionPane popup//
-            }
+         String inPass = JOptionPane.showInputDialog("Enter Password: ");
+         access.verify();
+         access.pass(inPass);
+         log = access.getBoolean();
+         System.out.print(log);
       }
       //pull matchups and place them in a table
       public void matchups() { 
          clear();
          if (log==true ) {
-         fill.add(team);
-         team.setToolTipText("<html>Add teams to the tournament roster<html?");
-         team.addActionListener(this);  
+         fill.add(teams);
+         teams.setToolTipText("<html>Add teams to the tournament roster<html?");
+         teams.addActionListener(this);  
          }
          else {
          
@@ -128,16 +122,16 @@ public class UserInterface extends JFrame implements ActionListener {
          validate();
          repaint();
       }
-      public void team () {
+      public void teams() {
          scheduleManagement schedule = new scheduleManagement();
          schedule.setSize(400,200);
          schedule.setLocationRelativeTo(null);
          schedule.setVisible(true);     
       }
       //removes items from other "screens"
-      public void clear () { 
+      public void clear() { 
          fill.remove(tips);
-         fill.remove(team);
+         fill.remove(teams);
          validate();
          repaint();
       }
