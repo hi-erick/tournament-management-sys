@@ -32,7 +32,7 @@ public class scheduleManagement extends JFrame implements ActionListener {
 
         if(source == teamNames) {
             for(int i = 0; i<10; i++) {
-                input = JOptionPane.showInputDialog("Enter team names: (click cancel once complete)");
+                input = JOptionPane.showInputDialog("Enter team name: ");
                 array.insert(input);
             }
         }
