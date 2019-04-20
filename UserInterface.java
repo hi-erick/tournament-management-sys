@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,6 +13,7 @@ public class UserInterface extends JFrame implements ActionListener {
    JPanel fill = new JPanel();
    JLabel tips = new JLabel("<html>This is temporary <br> so is this <html>");
    JButton match = new JButton("Match-ups");
+   JButton team = new JButton("Add Teams");
    JButton score = new JButton("Scoreboard");
    JButton info = new JButton("Information");
    JButton help = new JButton("Help");
@@ -47,7 +49,7 @@ public class UserInterface extends JFrame implements ActionListener {
       info.addActionListener(this);
       help.addActionListener(this);
    }
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) { 
          if(e.getSource()==admin){ 
            login(); 
          }
@@ -63,20 +65,23 @@ public class UserInterface extends JFrame implements ActionListener {
          if (e.getSource()==help) {
            help(); 
          }
+         if (e.getSource()==team) {
+           team();
+         }
       }
       
       public void login() {  
-      Path file = Paths.get("Key.txt");
-      InputStream input = null;
-      String line = null;
-      Scanner in = new Scanner(System.in);
-          try {
+         Path file = Paths.get("Key.txt");
+         InputStream input = null;
+         String line = null;
+         Scanner in = new Scanner(System.in);
+            try {
                input = Files.newInputStream(file);
                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                line = reader.readLine();
                input.close();
     
-            String inPass = JOptionPane.showInputDialog("Enter Passwird: ");
+               String inPass = JOptionPane.showInputDialog("Enter Passwird: ");
             
             if (inPass.equals(line)) {
                JOptionPane.showMessageDialog(null, "Correct");
@@ -93,6 +98,14 @@ public class UserInterface extends JFrame implements ActionListener {
       //pull matchups and place them in a table
       public void matchups() { 
          clear();
+         if (log==true ) {
+         fill.add(team);
+         team.setToolTipText("<html>Add teams to the tournament roster<html?");
+         team.addActionListener(this);  
+         }
+         else {
+         
+         }            
          validate();
          repaint();
       }
@@ -115,9 +128,16 @@ public class UserInterface extends JFrame implements ActionListener {
          validate();
          repaint();
       }
+      public void team () {
+         scheduleManagement schedule = new scheduleManagement();
+         schedule.setSize(400,200);
+         schedule.setLocationRelativeTo(null);
+         schedule.setVisible(true);     
+      }
       //removes items from other "screens"
       public void clear () { 
          fill.remove(tips);
+         fill.remove(team);
          validate();
          repaint();
       }
