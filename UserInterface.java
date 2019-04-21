@@ -22,11 +22,13 @@ public class UserInterface extends JFrame implements ActionListener {
    
    JLabel names = new JLabel();
    JLabel instructions = new JLabel("The team names for this tournament are:");
-   String st ;
+   String st;
+   String[] s;
+   int[] scoreList;
+   
       
    boolean log ;
    
-   Teams array = new Teams();
    Login access = new Login();
    
    public static void main (String [] args) {
@@ -35,6 +37,7 @@ public class UserInterface extends JFrame implements ActionListener {
       frame.setLocationRelativeTo(null);
       frame.setVisible(true);
       frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   
+      
    }
    
    public UserInterface() {
@@ -47,7 +50,7 @@ public class UserInterface extends JFrame implements ActionListener {
       buttons.add(help);
       buttons.add(admin);    
       con.add(fill,BorderLayout.CENTER);
-      fill.setLayout(new FlowLayout());
+      fill.setLayout(new FlowLayout()); //maybe switch to another layout
       admin.setToolTipText("<html>Allows an admin to login<html?");
       match.setToolTipText("<html>Displays upcoming<br>tournament match-ups</html>");
       score.setToolTipText("<html>Displays current standings <br> of the teams</html>");
@@ -58,6 +61,7 @@ public class UserInterface extends JFrame implements ActionListener {
       score.addActionListener(this);
       info.addActionListener(this);
       help.addActionListener(this);
+      
    }
       public void actionPerformed(ActionEvent e) { 
          if(e.getSource()==admin){ 
@@ -80,10 +84,6 @@ public class UserInterface extends JFrame implements ActionListener {
          }
          if (e.getSource()==teams) {
             teams();
-            /*for(int i = 0; i<10; i++) {
-               String input = JOptionPane.showInputDialog("Enter team names: ");
-               array.insert(input);
-            } */
          }
          if (e.getSource()==displayTeams) {
             display();
@@ -115,6 +115,7 @@ public class UserInterface extends JFrame implements ActionListener {
       //displays the current scores of each team from highest to lowest
       public void scoreboard() { 
          clear();
+         JTable scoreTable;
          validate();
          repaint();
       }
@@ -141,19 +142,21 @@ public class UserInterface extends JFrame implements ActionListener {
       public void clear() { 
          fill.remove(tips);
          fill.remove(teams);
+         fill.remove(instructions);
+         fill.remove(names);
          fill.remove(in);
-         fill.remove(teams);
          fill.remove(displayTeams);
          validate();
          repaint();
       }
       public void display() {
-         System.out.println(st);
+         System.out.println(Arrays.toString(s));
+         System.out.println(Arrays.toString(scoreList));
       }
       public void inField() {
          try {
                String str = in.getText();            
-               String [] s = str.split("[ ]*,[ ]*"); 
+               s = str.split("[ ]*,[ ]*"); 
                
                if(s.length>10) {
                   JOptionPane.showMessageDialog(null, "<html>too many teams entered<br>please try again<html>");
@@ -164,7 +167,13 @@ public class UserInterface extends JFrame implements ActionListener {
                fill.add(names);
                names.setText(str);
                System.out.println(Arrays.toString(s));
-               st = Arrays.toString(s);
+               
+               scoreList = new int [s.length];
+                  for (int i=0;i<s.length;i++){
+                     scoreList[i]=0;
+                  }
+               
+               score();
                validate();
                repaint();
                }
@@ -172,6 +181,10 @@ public class UserInterface extends JFrame implements ActionListener {
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Message: " + ex);
             }
+      }
+      public void score() {
+         //int[] score = new int[s.length];
+            
       }
 
 }
