@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,6 +10,7 @@ public class UserInterface extends JFrame implements ActionListener {
    Container con = getContentPane();
    JPanel buttons = new JPanel();
    JPanel fill = new JPanel();
+   JTextField in = new JTextField(50);
    JLabel tips = new JLabel("<html>This is temporary <br> so is this <html>");
    JButton match = new JButton("Match-ups");
    JButton teams = new JButton("Enter Teams");
@@ -19,7 +19,12 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton info = new JButton("Information");
    JButton help = new JButton("Help");
    JButton admin = new JButton("Admin");
-   boolean log;
+   
+   JLabel names = new JLabel();
+   JLabel instructions = new JLabel("The team names for this tournament are:");
+   String st ;
+      
+   boolean log ;
    
    Teams array = new Teams();
    Login access = new Login();
@@ -36,22 +41,19 @@ public class UserInterface extends JFrame implements ActionListener {
       super ("Tournament Organization");
       con.setLayout( new BorderLayout() );
       con.add(buttons,BorderLayout.NORTH);
-      buttons.add(teams);
-      buttons.add(displayTeams);
       buttons.add(match);
       buttons.add(score);
       buttons.add(info);
       buttons.add(help);
       buttons.add(admin);    
       con.add(fill,BorderLayout.CENTER);
+      fill.setLayout(new FlowLayout());
       admin.setToolTipText("<html>Allows an admin to login<html?");
       match.setToolTipText("<html>Displays upcoming<br>tournament match-ups</html>");
       score.setToolTipText("<html>Displays current standings <br> of the teams</html>");
       info.setToolTipText("<html>Provides information pertaining <br> to tournament scheduling</html>");
       help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");
       admin.addActionListener(this);
-      teams.addActionListener(this);
-      displayTeams.addActionListener(this);
       match.addActionListener(this);
       score.addActionListener(this);
       info.addActionListener(this);
@@ -73,12 +75,18 @@ public class UserInterface extends JFrame implements ActionListener {
          if (e.getSource()==help) {
             help(); 
          }
+         if (e.getSource()==in) {
+            inField();  
+         }
          if (e.getSource()==teams) {
-            //teams();
-            for(int i = 0; i<10; i++) {
+            teams();
+            /*for(int i = 0; i<10; i++) {
                String input = JOptionPane.showInputDialog("Enter team names: ");
                array.insert(input);
-            } 
+            } */
+         }
+         if (e.getSource()==displayTeams) {
+            display();
          }
       }
       
@@ -87,15 +95,16 @@ public class UserInterface extends JFrame implements ActionListener {
          access.verify();
          access.pass(inPass);
          log = access.getBoolean();
-         System.out.print(log);
       }
       //pull matchups and place them in a table
       public void matchups() { 
          clear();
          if (log==true ) {
          fill.add(teams);
+         fill.add(displayTeams);
          teams.setToolTipText("<html>Add teams to the tournament roster<html?");
-         teams.addActionListener(this);  
+         teams.addActionListener(this); 
+         displayTeams.addActionListener(this); 
          }
          else {
          
@@ -123,17 +132,47 @@ public class UserInterface extends JFrame implements ActionListener {
          repaint();
       }
       public void teams() {
-         scheduleManagement schedule = new scheduleManagement();
-         schedule.setSize(400,200);
-         schedule.setLocationRelativeTo(null);
-         schedule.setVisible(true);     
+         fill.add(in);
+         in.addActionListener(this);            
+         validate();
+         repaint();     
       }
       //removes items from other "screens"
       public void clear() { 
          fill.remove(tips);
          fill.remove(teams);
+         fill.remove(in);
+         fill.remove(teams);
+         fill.remove(displayTeams);
          validate();
          repaint();
       }
+      public void display() {
+         System.out.println(st);
+      }
+      public void inField() {
+         try {
+               String str = in.getText();            
+               String [] s = str.split("[ ]*,[ ]*"); 
+               
+               if(s.length>10) {
+                  JOptionPane.showMessageDialog(null, "<html>too many teams entered<br>please try again<html>");
+                  Arrays.fill(s,null);
+               }
+               else {
+               fill.add(instructions);
+               fill.add(names);
+               names.setText(str);
+               System.out.println(Arrays.toString(s));
+               st = Arrays.toString(s);
+               validate();
+               repaint();
+               }
+            }
+            catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Message: " + ex);
+            }
+      }
+
 }
-      
+   
