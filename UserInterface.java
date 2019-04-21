@@ -149,7 +149,7 @@ public class UserInterface extends JFrame implements ActionListener {
          validate();
          repaint();
       }
-      public void display() {
+      public void display() { //change this to displaying withing the Frame
          System.out.println(Arrays.toString(s));
          System.out.println(Arrays.toString(scoreList));
       }
