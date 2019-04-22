@@ -13,6 +13,7 @@ public class UserInterface extends JFrame implements ActionListener {
    JPanel fill = new JPanel();
    JPanel adminButtons = new JPanel();
    JPanel centerFill = new JPanel();
+   JPanel textHome = new JPanel();
    JTextField in = new JTextField(50);
    JLabel tips = new JLabel("<html>This is temporary <br> so is this <html>");
    JButton match = new JButton("Match-ups");
@@ -34,6 +35,7 @@ public class UserInterface extends JFrame implements ActionListener {
       
    boolean log ;
    boolean teamEntered = false;
+   boolean delay =  false;
    Login access = new Login();
    
    public static void main (String [] args) {
@@ -56,6 +58,8 @@ public class UserInterface extends JFrame implements ActionListener {
       buttons.add(admin);    
       con.add(fill,BorderLayout.CENTER);
       fill.setLayout(new BorderLayout()); //maybe switch to another layout
+      textHome.setLayout (new FlowLayout());
+      fill.add(textHome,BorderLayout.CENTER);
       
       
       admin.setToolTipText("<html>Allows an admin to login<html?");
@@ -141,7 +145,8 @@ public class UserInterface extends JFrame implements ActionListener {
             scoreTable();
          else {
             names.setText("No teams have been added yet.");
-            fill.add(names);
+            adminButtons.add(names);
+            fill.add(adminButtons,BorderLayout.NORTH);
          }
          validate();
          repaint();
@@ -149,14 +154,34 @@ public class UserInterface extends JFrame implements ActionListener {
       //provides the user with tips for how to better navigate the program
       public void help() { 
          clear();
-         
-         fill.add(tips);
+         try {
+         BufferedReader inHelp =new BufferedReader(new FileReader ("helpScreen.txt"));
+         String helpIn;
+         while((helpIn = inHelp.readLine()) != null)
+            {
+               tips.setText(helpIn);
+            }
+         inHelp.close();
+         }
+         catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Message: " + ex);
+            }
+         adminButtons.add(tips);
+         fill.add(adminButtons,BorderLayout.NORTH);
+         //textHome.add(tips);
          validate();
          repaint();
       }
       //provides information relating to schedualing of events
       public void information () {  
          clear();
+         if (delay==false) {
+            JLabel noDelay = new JLabel("There are no delays in this tournament");
+            fill.add(adminButtons, BorderLayout.NORTH);
+            adminButtons.add(noDelay,BorderLayout.NORTH);
+         }
+         else {
+         }
          validate();
          repaint();
       }
@@ -171,6 +196,7 @@ public class UserInterface extends JFrame implements ActionListener {
       public void clear() { 
          fill.removeAll();
          centerFill.removeAll();
+         adminButtons.removeAll();
          validate();
          repaint();
       }
