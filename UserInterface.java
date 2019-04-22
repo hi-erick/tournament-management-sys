@@ -13,9 +13,8 @@ public class UserInterface extends JFrame implements ActionListener {
    JPanel fill = new JPanel();
    JPanel adminButtons = new JPanel();
    JPanel centerFill = new JPanel();
-   JPanel textHome = new JPanel();
    JTextField in = new JTextField(50);
-   JLabel tips = new JLabel("<html>This is temporary <br> so is this <html>");
+   JLabel tips = new JLabel();
    JButton match = new JButton("Match-ups");
    JButton teams = new JButton("Enter Teams");
    JButton displayTeams = new JButton("Show Teams");
@@ -57,17 +56,15 @@ public class UserInterface extends JFrame implements ActionListener {
       buttons.add(help);
       buttons.add(admin);    
       con.add(fill,BorderLayout.CENTER);
-      fill.setLayout(new BorderLayout()); //maybe switch to another layout
-      textHome.setLayout (new FlowLayout());
-      fill.add(textHome,BorderLayout.CENTER);
+      fill.setLayout(new BorderLayout()); 
+      fill.add(adminButtons,BorderLayout.NORTH);
       
       
       admin.setToolTipText("<html>Allows an admin to login<html?");
       match.setToolTipText("<html>Displays upcoming<br>tournament match-ups</html>");
       score.setToolTipText("<html>Displays current standings <br> of the teams</html>");
       info.setToolTipText("<html>Provides information pertaining <br> to tournament scheduling</html>");
-      help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");
-      
+      help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");    
       
       admin.addActionListener(this);
       match.addActionListener(this);
@@ -75,7 +72,6 @@ public class UserInterface extends JFrame implements ActionListener {
       info.addActionListener(this);
       help.addActionListener(this);
       teams.addActionListener(this); 
-      displayTeams.addActionListener(this);
       in.addActionListener(this);
       logout.addActionListener(this); 
       
@@ -102,9 +98,6 @@ public class UserInterface extends JFrame implements ActionListener {
          if (e.getSource()==teams) {
             teams();
          }
-         if (e.getSource()==displayTeams) {
-            display();
-         }
          if (e.getSource()==logout) {
             buttons.remove(logout);
             log = false;
@@ -129,7 +122,6 @@ public class UserInterface extends JFrame implements ActionListener {
          clear();
          if (log==true ) {
          adminButtons.add(teams);
-         adminButtons.add(displayTeams);
          fill.add(adminButtons,BorderLayout.NORTH);
          teams.setToolTipText("<html>Add teams to the tournament roster<html?"); 
          }
@@ -138,7 +130,7 @@ public class UserInterface extends JFrame implements ActionListener {
          validate();
          repaint();
       }
-      //displays the current scores of each team from highest to lowest
+      //displays the current scores of each team
       public void scoreboard() { 
          clear();
          if (teamEntered == true)
@@ -168,7 +160,6 @@ public class UserInterface extends JFrame implements ActionListener {
             }
          adminButtons.add(tips);
          fill.add(adminButtons,BorderLayout.NORTH);
-         //textHome.add(tips);
          validate();
          repaint();
       }
@@ -192,7 +183,7 @@ public class UserInterface extends JFrame implements ActionListener {
          validate();
          repaint();     
       }
-      //removes items from other "screens"
+      //removes items from other screens
       public void clear() { 
          fill.removeAll();
          centerFill.removeAll();
@@ -213,7 +204,6 @@ public class UserInterface extends JFrame implements ActionListener {
                      row.add(scorePrint[i]);
                      model.addRow(row);
                   }
-               //setLayout(new FlowLayout());
                JTable table = new JTable (model);
                table.setLayout(new FlowLayout());
                table.setPreferredScrollableViewportSize(new Dimension(500,s.length*16));
@@ -223,10 +213,6 @@ public class UserInterface extends JFrame implements ActionListener {
                centerFill.add(scrollPane,BorderLayout.CENTER);
                fill.add(centerFill,BorderLayout.CENTER);
             }
-      public void display() { //either make this do something else or remove it 
-         System.out.println(Arrays.toString(s));
-         System.out.println(Arrays.toString(scoreList));
-      }
       public void inField() {
          try {
                String str = in.getText();            
