@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.nio.file.*;
@@ -19,16 +20,16 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton info = new JButton("Information");
    JButton help = new JButton("Help");
    JButton admin = new JButton("Admin");
-   
+   JTable table;
    JLabel names = new JLabel();
    JLabel instructions = new JLabel("The team names for this tournament are:");
    String st;
    String[] s;
    int[] scoreList;
-   
+   JScrollPane scrollPane;
       
    boolean log ;
-   
+   boolean teamEntered = false;
    Login access = new Login();
    
    public static void main (String [] args) {
@@ -107,7 +108,6 @@ public class UserInterface extends JFrame implements ActionListener {
          displayTeams.addActionListener(this); 
          }
          else {
-         
          }            
          validate();
          repaint();
@@ -115,7 +115,12 @@ public class UserInterface extends JFrame implements ActionListener {
       //displays the current scores of each team from highest to lowest
       public void scoreboard() { 
          clear();
-         JTable scoreTable;
+         if (teamEntered == true)
+            scoreTable();
+         else {
+            names.setText("No teams have been added yet.");
+            fill.add(names);
+         }
          validate();
          repaint();
       }
@@ -140,16 +145,33 @@ public class UserInterface extends JFrame implements ActionListener {
       }
       //removes items from other "screens"
       public void clear() { 
-         fill.remove(tips);
-         fill.remove(teams);
-         fill.remove(instructions);
-         fill.remove(names);
-         fill.remove(in);
-         fill.remove(displayTeams);
+         fill.removeAll();   
          validate();
          repaint();
       }
-      public void display() { //change this to displaying withing the Frame
+      public void scoreTable() {
+               String[] columnNames = {"Team Name","Score"};
+               setLayout(new FlowLayout());
+               String[] scorePrint = new String[scoreList.length];
+               for (int i = 0;i<scoreList.length;i++) {
+                  scorePrint[i] = String.valueOf(scoreList[i]);
+               }
+               DefaultTableModel model = new DefaultTableModel (columnNames, 0);
+                  for(int i=0;i<s.length;i++) {
+                     Vector row = new Vector(2);
+                     row.add(s[i]);
+                     row.add(scorePrint[i]);
+                     model.addRow(row);
+                  }
+               setLayout(new FlowLayout());
+               JTable table = new JTable (model);
+               table.setPreferredScrollableViewportSize(new Dimension(500,s.length*16));
+               table.setFillsViewportHeight(true);
+               table.getTableHeader().setReorderingAllowed(false);
+               scrollPane = new JScrollPane(table);
+               fill.add(scrollPane);
+            }
+      public void display() {
          System.out.println(Arrays.toString(s));
          System.out.println(Arrays.toString(scoreList));
       }
@@ -172,19 +194,14 @@ public class UserInterface extends JFrame implements ActionListener {
                   for (int i=0;i<s.length;i++){
                      scoreList[i]=0;
                   }
-               
-               score();
                validate();
                repaint();
+               teamEntered = true;
                }
             }
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Message: " + ex);
             }
-      }
-      public void score() {
-         //int[] score = new int[s.length];
-            
       }
 
 }
