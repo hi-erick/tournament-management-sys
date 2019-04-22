@@ -22,14 +22,14 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton info = new JButton("Information");
    JButton help = new JButton("Help");
    JButton admin = new JButton("Admin");
-   JButton logout = new JButton("logout");
+   JButton logout = new JButton("Logout");
    JTable table;
    JLabel names = new JLabel();
    JLabel guides = new JLabel("Enter the names of the teams participating in this tournament seperated by commas.");
-   JLabel instructions = new JLabel("The team names for this tournament are:");
-   String st;
-   String[] s;
-   int[] scoreList;
+   JLabel instructions = new JLabel("Team names succesfuly recorded");
+   String st; //string input of team names 
+   String[] s; //array for team names
+   int[] scoreList; //scores for the teams 
    JScrollPane scrollPane;
       
    boolean log ;
@@ -43,9 +43,7 @@ public class UserInterface extends JFrame implements ActionListener {
       frame.setLocationRelativeTo(null);
       frame.setVisible(true);
       frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   
-      
    }
-   
    public UserInterface() {
       super ("Tournament Organization");
       con.setLayout( new BorderLayout() );
@@ -59,12 +57,12 @@ public class UserInterface extends JFrame implements ActionListener {
       fill.setLayout(new BorderLayout()); 
       fill.add(adminButtons,BorderLayout.NORTH);
       
-      
-      admin.setToolTipText("<html>Allows an admin to login<html?");
+      admin.setToolTipText("<html>Allows a tournament-organzier to login<html?");
       match.setToolTipText("<html>Displays upcoming<br>tournament match-ups</html>");
       score.setToolTipText("<html>Displays current standings <br> of the teams</html>");
       info.setToolTipText("<html>Provides information pertaining <br> to tournament scheduling</html>");
       help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");    
+      logout.setToolTipText("<html>logout of tournament-organizer accout</html>");
       
       admin.addActionListener(this);
       match.addActionListener(this);
@@ -73,8 +71,7 @@ public class UserInterface extends JFrame implements ActionListener {
       help.addActionListener(this);
       teams.addActionListener(this); 
       in.addActionListener(this);
-      logout.addActionListener(this); 
-      
+      logout.addActionListener(this);   
    }
       public void actionPerformed(ActionEvent e) { 
          if(e.getSource()==admin){ 
@@ -105,7 +102,6 @@ public class UserInterface extends JFrame implements ActionListener {
             repaint();
          }
       }
-      
       public void login() {  
          String inPass = JOptionPane.showInputDialog("Enter Password: ");
          access.verify();
@@ -217,17 +213,13 @@ public class UserInterface extends JFrame implements ActionListener {
          try {
                String str = in.getText();            
                s = str.split("[ ]*,[ ]*"); 
-               
                if(s.length>10) {
                   JOptionPane.showMessageDialog(null, "<html>too many teams entered<br>please try again<html>");
                   Arrays.fill(s,null);
                }
                else {
-               fill.add(instructions);
-               fill.add(names);
-               names.setText(str);
-               System.out.println(Arrays.toString(s));
-               
+               centerFill.add(instructions);
+               System.out.println(Arrays.toString(s)); 
                scoreList = new int [s.length];
                   for (int i=0;i<s.length;i++){
                      scoreList[i]=0;
