@@ -92,6 +92,7 @@ public class UserInterface extends JFrame implements ActionListener {
 
       if(e.getSource()==generate){ 
          String sche = "";
+         String sched = "";
          try{
             Matchups1 matches = new Matchups1(s);           
          }
@@ -101,8 +102,9 @@ public class UserInterface extends JFrame implements ActionListener {
             BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
             //String helpIn = "";
             while((sche = reader.readLine()) != null) {
-               scheduleTip.setText(sche);
+               sched = sched + sche + "<br>";
             }
+            scheduleTip.setText(sched);
             reader.close();
          }
          catch(Exception eee) {
@@ -293,10 +295,10 @@ public class UserInterface extends JFrame implements ActionListener {
       catch (Exception ex) {
          JOptionPane.showMessageDialog(null, "Message: " + ex);
       }
-      for(int i = 0; i<10; i++) {
-         String t = s[i];
-         array.insert(t);      
-      }
+//       for(int i = 0; i<10; i++) {
+//          String t = s[i];
+//          array.insert(t);      
+//       }
       if(teamEntered == true) {
          adminButtons.add(generate);
          validate();
