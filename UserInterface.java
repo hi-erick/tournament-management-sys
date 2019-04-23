@@ -6,8 +6,6 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.*;
 
-//possibly update to make more visually pleaseing once done//
-
 public class UserInterface extends JFrame implements ActionListener {
    Container con = getContentPane();
    JPanel buttons = new JPanel();
@@ -20,34 +18,29 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton teams = new JButton("Enter Teams");
    JButton displayTeams = new JButton("Show Teams");
    JButton score = new JButton("Scoreboard");
-   JButton info = new JButton("Information");
    JButton help = new JButton("Help");
    JButton admin = new JButton("Admin");
    JButton logout = new JButton("logout");
    JButton generate = new JButton("Generate Schedule");
    JButton scoring = new JButton("Enter Scores");
    JTable table;
-
+   JScrollPane teamMatch = new JScrollPane();
    JLabel scheduleTip = new JLabel("");
    JLabel names = new JLabel();
    JLabel guides = new JLabel("Enter the names of the teams participating in this tournament seperated by commas.");
    JLabel instructions = new JLabel("The team names for this tournament are:");
-   String st;
-   String[] s; //team names
-   int[] scoreList;
+   String st; //team names as string
+   String[] s; //team names as array
+   int[] scoreList; //team scores
 
-   JScrollPane scrollPane;
-
-   //int a, b, c, d, e, f, g, h, i, j; 
+   JScrollPane scrollPane; 
    String teamA, teamB, teamC, teamD, teamE, teamF, teamG, teamH, teamI, teamJ, teamK;
 
    boolean log ;
    boolean teamEntered = false;
    boolean delay =  false;
    Login access = new Login();
-   //Points points = new Points();
    Teams array = new Teams();
-   //Matchups1 matches = new Matchups1();
 
    public static void main (String [] args) {
       UserInterface frame = new UserInterface(); 
@@ -63,7 +56,6 @@ public class UserInterface extends JFrame implements ActionListener {
       con.add(buttons,BorderLayout.NORTH);
       buttons.add(match);
       buttons.add(score);
-      buttons.add(info);
       buttons.add(help);
       buttons.add(admin);    
       con.add(fill,BorderLayout.CENTER);
@@ -72,12 +64,10 @@ public class UserInterface extends JFrame implements ActionListener {
       admin.setToolTipText("<html>Allows an admin to login<html?");
       match.setToolTipText("<html>Displays upcoming<br>tournament match-ups</html>");
       score.setToolTipText("<html>Displays current standings <br> of the teams</html>");
-      info.setToolTipText("<html>Provides information pertaining <br> to tournament scheduling</html>");
       help.setToolTipText("<html>Provides additional information <br> on how to use the program</html>");    
       admin.addActionListener(this);
       match.addActionListener(this);
       score.addActionListener(this);
-      info.addActionListener(this);
       help.addActionListener(this);
       teams.addActionListener(this); 
       in.addActionListener(this);
@@ -114,7 +104,10 @@ public class UserInterface extends JFrame implements ActionListener {
          catch(Exception eee) {
             JOptionPane.showMessageDialog(null, "Message: " + eee);
          }
-         centerFill.add(scheduleTip);
+         teamMatch.setViewportView(scheduleTip);
+         teamMatch.setPreferredSize(new Dimension(200, 300));
+         teamMatch.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+         centerFill.add(teamMatch);
          validate();
          repaint();
       }
@@ -125,10 +118,6 @@ public class UserInterface extends JFrame implements ActionListener {
 
       if (e.getSource()==score) {
          scoreboard();
-      }
-
-      if (e.getSource()==info) {
-         information();
       }
 
       if (e.getSource()==help) {
@@ -219,7 +208,15 @@ public class UserInterface extends JFrame implements ActionListener {
       teams.setToolTipText("<html>Add teams to the tournament roster<html?"); 
       }
       else {
-      }            
+      } 
+      if (teamEntered == true) {  
+         teamMatch.setViewportView(scheduleTip);
+         teamMatch.setPreferredSize(new Dimension(200, 300));
+         teamMatch.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+         JPanel below = new JPanel();
+         fill.add(below,BorderLayout.CENTER); 
+         below.add(teamMatch);   
+      }
       validate();
       repaint();
    }
@@ -258,21 +255,6 @@ public class UserInterface extends JFrame implements ActionListener {
 
       adminButtons.add(tips);
       fill.add(adminButtons,BorderLayout.NORTH);
-      validate();
-      repaint();
-   }
-
-      //provides information relating to schedualing of events
-
-   public void information () {  
-      clear();
-      if (delay==false) {
-         JLabel noDelay = new JLabel("There are no delays in this tournament");
-         fill.add(adminButtons, BorderLayout.NORTH);
-         adminButtons.add(noDelay,BorderLayout.NORTH);
-      }
-      else {
-      }
       validate();
       repaint();
    }
@@ -344,10 +326,6 @@ public class UserInterface extends JFrame implements ActionListener {
       catch (Exception ex) {
          JOptionPane.showMessageDialog(null, "Message: " + ex);
       }
-//       for(int i = 0; i<10; i++) {
-//          String t = s[i];
-//          array.insert(t);      
-//       }
       if(teamEntered == true) {
          adminButtons.add(generate);
          validate();
