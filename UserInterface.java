@@ -25,6 +25,7 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton admin = new JButton("Admin");
    JButton logout = new JButton("logout");
    JButton generate = new JButton("Generate Schedule");
+   JButton scoring = new JButton("Enter Scores");
    JTable table;
 
    JLabel scheduleTip = new JLabel("");
@@ -82,14 +83,17 @@ public class UserInterface extends JFrame implements ActionListener {
       in.addActionListener(this);
       logout.addActionListener(this); 
       generate.addActionListener(this);
+      scoring.addActionListener(this);
    }
 
-   public void actionPerformed(ActionEvent e) { 
+   public void actionPerformed(ActionEvent e) { // return!
 
       if(e.getSource()==admin){ 
          login(); 
       }
-
+      if(e.getSource()==scoring){
+         scoring();
+      }
       if(e.getSource()==generate){ 
          String sche = "";
          String sched = "";
@@ -155,12 +159,57 @@ public class UserInterface extends JFrame implements ActionListener {
       log = access.getBoolean();
       if (log== true) {
          buttons.add(logout);
+         buttons.add(scoring);
       }
       validate();
       repaint();
    }
 
       //pull matchups and place them in a table
+   public void scoring(){
+      int length = 0;
+      String input;
+      clear();
+      if (log==true ) {
+      adminButtons.add(scoring);
+      fill.add(adminButtons,BorderLayout.NORTH);
+      int[] score = new int[10];
+      for(int y=0; y<=10;y++)
+      {
+         try
+         {
+            if(s[y]!=null)
+               length++;
+         }
+         catch(Exception be)
+         {
+         
+         }
+      }
+      for(int z=0; z<length; z++)
+      {
+         do
+         {
+            input = JOptionPane.showInputDialog(null,"For team: "+s[z]+" enter a '0' if they won, '1' if the lost, '2' for draw"
+            +", or 3 if they did not play");
+         }while(input.equals("0")==false&&input.equals("1")==false&&input.equals("2")==false&&input.equals("3")==false);
+         if(input.equals("0")==true)
+            score[z]=score[z]+5;
+         if(input.equals("1")==true)
+            score[z]=score[z]+1;
+         if(input.equals("2")==true)
+            score[z]=score[z]+3;
+      }
+      for(int z=0; z<length; z++)
+         {
+            scoreList[z] = score[z];
+         }
+      scoreTable();
+      }else {
+      }            
+      validate();
+      repaint();
+   }
 
    public void matchups() { 
       clear();
