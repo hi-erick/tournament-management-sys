@@ -36,7 +36,7 @@ public class Matchups1
       int i=0;
       int m=0;
       boolean isFound = false;
-      Path file = Paths.get("C:\\Users\\saulp\\Desktop\\spring 2019\\schedule.txt");
+      Path file = Paths.get("schedule.txt");
       String str = "";
       String checkStr = "";
       String[] track = new String[mUps];
@@ -108,6 +108,9 @@ public class Matchups1
       {
          try
          {
+            String temp = "";
+            temp = "<html>"+str;
+            data = temp.getBytes();
             output = new 
                BufferedOutputStream(Files.newOutputStream(file, CREATE));
             output.write(data);
