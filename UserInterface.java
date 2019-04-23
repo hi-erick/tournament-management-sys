@@ -27,7 +27,7 @@ public class UserInterface extends JFrame implements ActionListener {
    JButton generate = new JButton("Generate Schedule");
    JTable table;
 
-
+   JLabel scheduleTip = new JLabel("");
    JLabel names = new JLabel();
    JLabel guides = new JLabel("Enter the names of the teams participating in this tournament seperated by commas.");
    JLabel instructions = new JLabel("The team names for this tournament are:");
@@ -91,11 +91,26 @@ public class UserInterface extends JFrame implements ActionListener {
       }
 
       if(e.getSource()==generate){ 
+         String sche = "";
          try{
             Matchups1 matches = new Matchups1(s);           
          }
          catch(Exception ee) {
          }
+         try {
+            BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
+            //String helpIn = "";
+            while((sche = reader.readLine()) != null) {
+               scheduleTip.setText(sche);
+            }
+            reader.close();
+         }
+         catch(Exception eee) {
+            JOptionPane.showMessageDialog(null, "Message: " + eee);
+         }
+         centerFill.add(scheduleTip);
+         validate();
+         repaint();
       }
 
       if (e.getSource()==match) {
