@@ -1,13 +1,18 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 
 import javax.swing.*;
 class Frames implements ActionListener {
     
-    public void main(String [] args) {
+    JButton teamA = new JButton("Team A");
+    static boolean visible = false;
+    
+    public static void main(String [] args) {
        
-        Container con = getContentPane();
-        JButton teamA = new JButton("Team A");
+        //Container con = getContentPane();
+        //static JButton teamA = new JButton("Team A");
         JButton teamB = new JButton("Team B");
         JButton teamC = new JButton("Team C");
         JButton teamD = new JButton("Team D");
@@ -17,13 +22,14 @@ class Frames implements ActionListener {
         JButton teamH = new JButton("Team H");
         JButton teamI = new JButton("Team I");
         JButton teamJ = new JButton("Team J");
-        
+                
         JRadioButton win = new JRadioButton("Won");
         JRadioButton loss = new JRadioButton("Loss");
         JRadioButton draw = new JRadioButton("Draw");
+        
         JFrame frame = new JFrame("Wins/Loses");
         JFrame frame1 = new JFrame("Team A");
-        JFrame frame2 = new JFrame("Team B");
+        /*JFrame frame2 = new JFrame("Team B");
         JFrame frame3 = new JFrame("Team C");
         JFrame frame4 = new JFrame("Team D");
         JFrame frame5 = new JFrame("Team E");
@@ -31,26 +37,24 @@ class Frames implements ActionListener {
         JFrame frame7 = new JFrame("Team G");
         JFrame frame8 = new JFrame("Team H");
         JFrame frame9 = new JFrame("Team I");
-        JFrame frame10 = new JFrame("Team J");
+        JFrame frame10 = new JFrame("Team J");*/
 
-        /*static*/ boolean visible = false;
+        //static boolean visible = false;
 
 
-
-        //frame.add(win);
-        //frame.add(loss);
-        //frame.add(draw);
+        
+        
         frame.setSize(700,500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        
         frame1.setSize(500,500);
         frame1.setLocationRelativeTo(null);
         frame1.setVisible(visible);;
         frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        con.add(frame);
-        //frame.setLayout(new FlowLayout());
+        frame.setLayout(new FlowLayout() );
         frame.add(teamA);
         teamA.addActionListener(this);
         //teamB.addActionListener(this);
